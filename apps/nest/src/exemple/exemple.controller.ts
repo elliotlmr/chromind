@@ -1,11 +1,14 @@
 import { Controller, Get, HttpCode, Param, Post, Req } from '@nestjs/common';
 import { Request } from 'express';
+import { AppService } from 'src/app.service';
 
 @Controller('exemple')
 export class ExempleController {
+  constructor(private readonly appService: AppService) {}
+
   @Get()
   findAll(@Req() req: Request): string {
-    return 'This action returns all exemples';
+    return 'This action returns all exemples' + req.body;
   }
 
   @Get(':id')
