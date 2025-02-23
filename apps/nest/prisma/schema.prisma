@@ -19,6 +19,12 @@ model User {
   password  String
   createdAt DateTime @default(now())
   entries   Entry[]
+  role      Role  @default(USER)
+}
+
+enum Role {
+  ADMIN
+  USER
 }
 
 model Emotion {

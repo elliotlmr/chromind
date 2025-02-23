@@ -2,6 +2,13 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../prisma/prisma.service';
+import { Role } from '@prisma/client';
+
+type JwtPayload = {
+  sub: string;
+  email: string;
+  role: Role;
+};
 
 @Injectable()
 export class AuthService {
@@ -16,7 +23,7 @@ export class AuthService {
       data: { email, password: hashedPassword },
     });
 
-    return this.generateToken(user.id, user.email);
+    return this.generateToken(user.id, user.email, user.role);
   }
 
   async signin(email: string, password: string) {
@@ -29,11 +36,11 @@ export class AuthService {
     if (!isPasswordValid)
       throw new UnauthorizedException('Invalid credentials');
 
-    return this.generateToken(user.id, user.email);
+    return this.generateToken(user.id, user.email, user.role);
   }
 
-  private generateToken(userId: string, email: string) {
-    const payload = { sub: userId, email };
+  private generateToken(userId: string, email: string, role: Role) {
+    const payload: JwtPayload = { sub: userId, email, role };
     return { access_token: this.jwtService.sign(payload) };
   }
 }

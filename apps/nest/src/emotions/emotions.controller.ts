@@ -1,5 +1,7 @@
-import { Controller, Get, Post, UseGuards, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards } from '@nestjs/common';
 import { EmotionsService } from './emotions.service';
+import { CreateEmotionDto } from './dto/create-emotion.dto';
+import { AdminGuard } from '../auth/admin.guard';
 
 @Controller('emotions')
 export class EmotionsController {

@@ -13,11 +13,34 @@ import { EmotionsModule } from './emotions/emotions.module';
 import { EntriesController } from './entries/entries.controller';
 import { EntriesService } from './entries/entries.service';
 import { EntriesModule } from './entries/entries.module';
+import { AdminGuard } from './auth/admin.guard';
+import { AuthGuard } from './auth/auth.guard';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true }), AuthModule, EmotionsModule, EntriesModule],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    AuthModule,
+    EmotionsModule,
+    EntriesModule,
+  ],
   exports: [PrismaService],
-  controllers: [AppController, AuthController, ExempleController, EmotionsController, EntriesController],
-  providers: [AppService, PrismaService, JwtStrategy, EmotionsService, EntriesService],
+  controllers: [
+    AppController,
+    AuthController,
+    ExempleController,
+    EmotionsController,
+    EntriesController,
+  ],
+  providers: [
+    AppService,
+    AdminGuard,
+    AuthGuard,
+    JwtService,
+    PrismaService,
+    JwtStrategy,
+    EmotionsService,
+    EntriesService,
+  ],
 })
 export class AppModule {}
