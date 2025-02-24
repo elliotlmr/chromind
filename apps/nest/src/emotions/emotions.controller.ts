@@ -1,14 +1,16 @@
-import { Controller, Get, Post, Body, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards, Req } from '@nestjs/common';
 import { EmotionsService } from './emotions.service';
 import { CreateEmotionDto } from './dto/create-emotion.dto';
 import { AdminGuard } from '../auth/admin.guard';
+import { Request } from 'express';
 
 @Controller('emotions')
 export class EmotionsController {
   constructor(private readonly emotionsService: EmotionsService) {}
 
   @Get()
-  findAll() {
+  findAll(@Req() req: Request) {
+    console.log(req.headers);
     return this.emotionsService.getAllEmotions();
   }
 

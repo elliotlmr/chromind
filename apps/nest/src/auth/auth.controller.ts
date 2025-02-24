@@ -1,8 +1,18 @@
-import { Controller, Post, Body, UseGuards, Req, Get } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  UseGuards,
+  Req,
+  Get,
+  UseInterceptors,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { Request } from 'express';
+import { TokenInterceptor } from 'src/interceptors/token.interceptor';
 
+@UseInterceptors(TokenInterceptor)
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
