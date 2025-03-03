@@ -1,6 +1,10 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import {
+  DocumentBuilder,
+  SwaggerCustomOptions,
+  SwaggerModule,
+} from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -11,8 +15,16 @@ async function bootstrap() {
     .setVersion('1.0')
     // .addTag('cats')
     .build();
+
+  const custom: SwaggerCustomOptions = {
+    customSiteTitle: 'API | Chromind',
+    customCss: '.swagger-ui .topbar { display: none }',
+    customfavIcon: '/assets/favicon.ico',
+  };
+
   const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, documentFactory);
+
+  SwaggerModule.setup('api', app, documentFactory, custom);
 
   await app.listen(process.env.PORT ?? 3000);
 }

@@ -6,11 +6,13 @@ import {
   Req,
   Get,
   UseInterceptors,
+  Res,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { JwtAuthGuard } from './jwt-auth.guard';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { Request } from 'express';
 import { TokenInterceptor } from 'src/interceptors/token.interceptor';
+import { AuthGuard } from '@nestjs/passport';
 
 @UseInterceptors(TokenInterceptor)
 @Controller('auth')
@@ -31,5 +33,24 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   me(@Req() req: Request) {
     return req.user;
+  }
+
+  // GOOGLE AUTH
+  @Get('google')
+  @UseGuards(AuthGuard('google'))
+  async googleAuth() {}
+
+  @Get('google/callback')
+  @UseGuards(AuthGuard('google'))
+  async googleAuthCallback(@Req() req, @Res() res) {
+    if (!req.user) {
+      return 'No user from google';
+    }
+
+    const { id, email, role } = req.user;
+
+    const token = this.authService.generateToken(id, email, role);
+
+    res.redirect(`http://localhost:3000?token=${token}`);
   }
 }

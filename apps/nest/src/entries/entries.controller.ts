@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { EntriesService } from './entries.service';
 import { CreateEntryDto } from './dto/create-entry.dto';
-import { AuthGuard } from '../auth/auth.guard'; // Ensure users are logged in
+import { AuthGuard } from '../auth/guards/auth.guard'; // Ensure users are logged in
 
 @Controller('entries')
 export class EntriesController {
