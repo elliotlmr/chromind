@@ -48,3 +48,20 @@ Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+
+La liste des libs que j'utilise en 2025 pour commencer un projet React Native:
+
+- Restyle: UI theming
+- Expo Router: navigation
+- TanStack: data fetching
+- Reanimated + Skia: animation/chart
+- Zustand + immer: state management
+- React hook form + zod : formulaires
+- MMKV: storage
+- react-native-keyboard-controller: pour gérer le clavier
+- @gorhom/bottom-sheet: bottom sheet
+- Maestro: tests E2E
+- @bacons/apple-targets: pour faire des widgets
+- Skott: pour détecter les circular dependencies
+- msw pour mock les api
+- knip pour trouver le dead code/useless dependencies

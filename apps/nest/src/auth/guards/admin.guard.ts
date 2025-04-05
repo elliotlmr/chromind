@@ -15,7 +15,7 @@ export class AdminGuard implements CanActivate {
     private readonly reflector: Reflector,
   ) {}
 
-  canActivate(context: ExecutionContext): boolean {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<Request>();
     const authHeader = request.headers.authorization;
 
@@ -29,14 +29,19 @@ export class AdminGuard implements CanActivate {
     }
 
     try {
-      const decoded = this.jwtService.verify<{ role: string }>(token);
+      const decoded = await this.jwtService.verifyAsync<{ role: string }>(
+        token,
+        {
+          secret: process.env.JWT_SECRET,
+        },
+      );
+
       if (decoded.role !== 'ADMIN') {
         throw new ForbiddenException('You do not have admin privileges');
       }
       request.user = decoded; // Attach user to request
       return true;
-    } catch (error) {
-      console.error(error);
+    } catch {
       throw new ForbiddenException('Invalid or expired token');
     }
   }

@@ -1,9 +1,20 @@
-import { IsString, IsHexColor } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsString, IsHexColor, IsArray, ValidateNested } from 'class-validator';
 
 export class CreateEmotionDto {
-  @IsString()
-  name!: string; // e.g., "Happiness"
-
   @IsHexColor()
-  color!: string; // e.g., "#FF5733"
+  color!: string;
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => EmotionTranslationDto)
+  translations!: EmotionTranslationDto[];
+}
+
+export class EmotionTranslationDto {
+  @IsString()
+  language!: string; // e.g., "en", "fr"
+
+  @IsString()
+  name!: string; // e.g., "Joy", "Joie"
 }
