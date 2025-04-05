@@ -8,7 +8,6 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthGuard } from './guards/auth.guard';
 import { AdminGuard } from './guards/admin.guard';
 import { PassportModule } from '@nestjs/passport';
-import { GoogleStrategy } from './strategies/google.strategy';
 
 @Module({
   imports: [
@@ -16,18 +15,11 @@ import { GoogleStrategy } from './strategies/google.strategy';
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '1h' },
+      signOptions: { expiresIn: '20s' },
     }),
   ],
   controllers: [AuthController],
-  providers: [
-    AuthService,
-    PrismaService,
-    JwtStrategy,
-    AuthGuard,
-    AdminGuard,
-    GoogleStrategy,
-  ],
+  providers: [AuthService, PrismaService, JwtStrategy, AuthGuard, AdminGuard],
   exports: [AuthService, AuthGuard, AdminGuard, JwtStrategy],
 })
 export class AuthModule {}

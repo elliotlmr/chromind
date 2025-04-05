@@ -9,6 +9,10 @@ import {
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  app.enableCors({
+    origin: process.env.CORS_ORIGIN ?? 'http://localhost:5173',
+  });
+
   const config = new DocumentBuilder()
     .setTitle('Chromind API')
     .setDescription('The API description')
@@ -24,8 +28,10 @@ async function bootstrap() {
 
   const documentFactory = () => SwaggerModule.createDocument(app, config);
 
-  SwaggerModule.setup('api', app, documentFactory, custom);
+  SwaggerModule.setup('doc', app, documentFactory, custom);
 
   await app.listen(process.env.PORT ?? 3000);
+
+  console.log('API is running on: ', await app.getUrl());
 }
 void bootstrap();
