@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output = "../generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String  @id @default(uuid())
+  email       String  @unique
+  password    String
+  createdAt   DateTime @default(now())
+  entries     Entry[]
+  role        Role  @default(USER)
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+model Emotion {
+  id    String @id @default(uuid())
+  color String // e.g., "#FF5733"
+  translations EmotionTranslation[]
+}
+
+model EmotionTranslation {
+  id       String  @id @default(uuid())
+  language String  // "fr", "en", "es", etc.
+  name     String
+  emotionId String
+  emotion  Emotion @relation(fields: [emotionId], references: [id])
+}
+
+model Entry {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  date      DateTime
+  scores    Json  // Store emotion scores as JSON (e.g., {"happiness": 8, "anger": 2})
+}

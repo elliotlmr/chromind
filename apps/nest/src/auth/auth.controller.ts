@@ -11,12 +11,11 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { Request } from 'express';
+import type { Request } from 'express';
 import { TokenInterceptor } from 'src/interceptors/token.interceptor';
 import { AdminGuard } from './guards/admin.guard';
 import { AuthGuard } from './guards/auth.guard';
 import { SignUpDto } from './dto/sign-up.dto';
-import { sign } from 'crypto';
 
 @UseInterceptors(TokenInterceptor)
 @Controller('auth')
