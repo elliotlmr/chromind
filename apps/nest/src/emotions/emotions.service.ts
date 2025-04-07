@@ -12,7 +12,7 @@ export class EmotionsService {
    * @param language - Optional: filter by language
    */
   async getAllEmotions(language?: string): Promise<Emotion[]> {
-    return this.prisma.emotion.findMany({
+    return await this.prisma.emotion.findMany({
       include: {
         translations: language
           ? { where: { language }, select: { name: true } }
@@ -26,7 +26,7 @@ export class EmotionsService {
    * @param dto - CreateEmotionDto
    */
   async createEmotion(dto: CreateEmotionDto) {
-    return this.prisma.emotion.create({
+    return await this.prisma.emotion.create({
       data: {
         color: dto.color,
         translations: {
@@ -46,7 +46,7 @@ export class EmotionsService {
    * @param language - Optional: filter by language
    */
   async getEmotionById(id: string, language?: string) {
-    return this.prisma.emotion.findUnique({
+    return await this.prisma.emotion.findUnique({
       where: { id },
       include: {
         translations: language

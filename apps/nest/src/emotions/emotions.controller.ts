@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, UseGuards, Req } from '@nestjs/common';
 import { EmotionsService } from './emotions.service';
 import { CreateEmotionDto } from './dto/create-emotion.dto';
 import { AdminGuard } from '../auth/guards/admin.guard';
-import { Request } from 'express';
+import type { Request } from 'express';
 
 @Controller('emotions')
 export class EmotionsController {
