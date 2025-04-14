@@ -14,14 +14,16 @@ import { AuthService } from './auth.service';
 import type { Request } from 'express';
 import { TokenInterceptor } from 'src/interceptors/token.interceptor';
 import { AdminGuard } from './guards/admin.guard';
-import { AuthGuard } from './guards/auth.guard';
 import { SignUpDto } from './dto/sign-up.dto';
+import { IsPublic } from 'src/utils/isPublic';
+import { SignInDto } from './dto/sign-in.dto';
 
 @UseInterceptors(TokenInterceptor)
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @IsPublic()
   @Post('signup')
   async signup(@Body() signUpDto: SignUpDto) {
     if (!signUpDto.email || !signUpDto.password || !signUpDto.confirmPassword) {
@@ -39,9 +41,10 @@ export class AuthController {
     return await this.authService.signup(signUpDto.email, signUpDto.password);
   }
 
+  @IsPublic()
   @HttpCode(HttpStatus.OK)
   @Post('signin')
-  async signin(@Body() signInDto: SignUpDto) {
+  async signin(@Body() signInDto: SignInDto) {
     if (!signInDto.email || !signInDto.password) {
       throw new UnauthorizedException(
         'Invalid email, password or password confirmation.',
@@ -52,13 +55,11 @@ export class AuthController {
   }
 
   @Get('me')
-  @UseGuards(AuthGuard)
   me(@Req() req: Request) {
     return req.user;
   }
 
   @Get('hello')
-  @UseGuards(AuthGuard)
   hello() {
     return 'HELLO';
   }
