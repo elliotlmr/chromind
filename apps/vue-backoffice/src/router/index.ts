@@ -8,6 +8,12 @@ import EmotionsView from '@/views/EmotionsView.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import NotFoundView from '@/views/NotFoundView.vue'
 import { useAuthStore } from '@/stores/auth'
+import { jwtDecode, type JwtPayload } from 'jwt-decode'
+import { useNotificationStore } from '@/stores/notifications'
+
+interface CustomJwtPayload extends JwtPayload {
+  role: 'ADMIN' | 'USER'
+}
 
 export const routes = [
   {
@@ -81,9 +87,23 @@ export default router
 
 router.beforeEach((to, from, next) => {
   const auth = useAuthStore()
+  const notifications = useNotificationStore()
 
   if (to.meta.requiresAuth && !auth.isAuthenticated) {
+    notifications.createError('Veuillez vous connecter pour accéder à cette page.')
     return next('/auth/signin')
+  }
+
+  if (to.meta.requiresAuth && auth.token) {
+    const decoded: CustomJwtPayload = jwtDecode(auth.token)
+
+    if (decoded.role !== 'ADMIN') {
+      notifications.createError(
+        'Accès refusé : seuls les administrateurs peuvent accéder au backoffice.',
+      )
+      auth.logout()
+      return next('/auth/signin')
+    }
   }
 
   // if (to.meta.requiresAdmin && !auth.isAdmin) {

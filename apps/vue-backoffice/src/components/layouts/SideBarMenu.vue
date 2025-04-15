@@ -3,13 +3,16 @@ import { routes } from '@/router';
 import NavLink from '@/components/layouts/NavLink.vue';
 import { useAuthStore } from '@/stores/auth';
 import { useRouter } from 'vue-router';
+import { useNotificationStore } from '@/stores/notifications';
 
 const auth = useAuthStore();
+const notifications = useNotificationStore();
 const router = useRouter();
 
 const logout = () => {
+    notifications.createInfo('Vous avez été déconnecté.')
     auth.logout();
-    router.push('/login');
+    router.push('/auth/signin');
 };
 </script>
 

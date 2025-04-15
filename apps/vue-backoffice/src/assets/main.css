@@ -1,11 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Major+Mono+Display&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Sarina&display=swap');
-
-@import 'tailwindcss';
 @import './base.css';
-
-@theme {
-  --font-sarina: 'Sarina', cursive;
-}
 
 #app {
   margin: 0 auto;

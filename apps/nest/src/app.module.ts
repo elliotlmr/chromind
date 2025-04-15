@@ -16,6 +16,9 @@ import { EntriesModule } from './entries/entries.module';
 import { AdminGuard } from './auth/guards/admin.guard';
 import { AuthGuard } from './auth/guards/auth.guard';
 import { JwtService } from '@nestjs/jwt';
+import { UsersController } from './users/users.controller';
+import { UsersService } from './users/users.service';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -23,6 +26,7 @@ import { JwtService } from '@nestjs/jwt';
     AuthModule,
     EmotionsModule,
     EntriesModule,
+    UsersModule,
   ],
   exports: [PrismaService],
   controllers: [
@@ -31,6 +35,7 @@ import { JwtService } from '@nestjs/jwt';
     ExempleController,
     EmotionsController,
     EntriesController,
+    UsersController,
   ],
   providers: [
     AppService,
@@ -41,6 +46,7 @@ import { JwtService } from '@nestjs/jwt';
     JwtStrategy,
     EmotionsService,
     EntriesService,
+    UsersService,
   ],
 })
 export class AppModule {}
