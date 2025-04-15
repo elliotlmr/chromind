@@ -11,7 +11,7 @@ export class EntriesService {
     return this.prisma.entry.create({
       data: {
         userId,
-        date: new Date(dto.date),
+        createdAt: new Date(dto.date),
         scores: JSON.stringify(dto.emotions), // Store as JSON
       },
     });
@@ -20,7 +20,15 @@ export class EntriesService {
   async getUserEntries(userId: string): Promise<Entry[]> {
     return this.prisma.entry.findMany({
       where: { userId },
-      orderBy: { date: 'desc' },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  async getDailySubmissions() {
+    return this.prisma.entry.groupBy({
+      by: ['createdAt'],
+      _count: true,
+      orderBy: { createdAt: 'asc' },
     });
   }
 }

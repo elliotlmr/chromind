@@ -9,14 +9,13 @@ import {
 } from '@nestjs/common';
 import { EntriesService } from './entries.service';
 import { CreateEntryDto } from './dto/create-entry.dto';
-import { AuthGuard } from '../auth/guards/auth.guard'; // Ensure users are logged in
+import { AdminGuard } from 'src/auth/guards/admin.guard';
 
 @Controller('entries')
 export class EntriesController {
   constructor(private readonly entriesService: EntriesService) {}
 
   @Post()
-  @UseGuards(AuthGuard)
   create(
     @Request() req: { user: { id: string } },
     @Body() createEntryDto: CreateEntryDto,
@@ -27,5 +26,13 @@ export class EntriesController {
   @Get('user/:userId')
   findUserEntries(@Param('userId') userId: string) {
     return this.entriesService.getUserEntries(userId);
+  }
+
+  //? Stats endpoints
+
+  @UseGuards(AdminGuard)
+  @Get('stats/daily-submissions')
+  async getDailySubmissions() {
+    return await this.entriesService.getDailySubmissions();
   }
 }

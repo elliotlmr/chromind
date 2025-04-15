@@ -45,6 +45,6 @@ model Entry {
   id        String   @id @default(uuid())
   userId    String
   user      User     @relation(fields: [userId], references: [id])
-  date      DateTime
+  createdAt      DateTime
   scores    Json  // Store emotion scores as JSON (e.g., {"happiness": 8, "anger": 2})
 }
