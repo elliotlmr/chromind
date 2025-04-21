@@ -29,10 +29,18 @@ axiosInstance.interceptors.response.use(
     const auth = useAuthStore()
     const notifications = useNotificationStore()
 
+    if (
+      error.code === 'ERR_NETWORK' ||
+      error.message.includes('Network Error') ||
+      error.message.includes('ERR_CONNECTION_REFUSED')
+    ) {
+      notifications.createError('Le serveur ne répond pas. Veuillez réessayer plus tard.')
+      router.push({ name: 'signin' })
+    }
+
     if (axios.isAxiosError(error) && error.response) {
       const status = error.response.status
 
-      // Gestion des erreurs 401 (non authentifié) et 403 (accès interdit)
       if (status === 401 || status === 403) {
         // On déconnecte l'utilisateur et on le redirige vers la page de login
         notifications.createError('Accès non authorisé.')

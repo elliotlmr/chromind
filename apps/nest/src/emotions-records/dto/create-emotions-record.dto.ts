@@ -4,14 +4,14 @@ import {
   IsString,
   Min,
   Max,
-  IsDateString,
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
+import { Emotion } from '@prisma/client';
 
 class EmotionScoreDto {
   @IsString()
-  emotion!: string; // e.g., "happiness"
+  emotionId!: Emotion['id']; // e.g., "happiness"
 
   @IsInt()
   @Min(0)
@@ -19,10 +19,7 @@ class EmotionScoreDto {
   score!: number; // e.g., 8
 }
 
-export class CreateEntryDto {
-  @IsDateString()
-  date!: string; // e.g., "2024-02-21"
-
+export class CreateEmotionsRecordDto {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => EmotionScoreDto)
