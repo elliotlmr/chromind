@@ -1,8 +1,8 @@
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <template>
-    <main>
-        <p>Error : Page Not Found</p>
-    </main>
+  <div class="flex flex-col items-center justify-center h-screen">
+    <p>404 : There is nothing here !</p>
+    <RouterLink to="/dashboard">Go back to dashboard</RouterLink>
+  </div>
 </template>

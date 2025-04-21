@@ -10,9 +10,9 @@ import { ConfigModule } from '@nestjs/config';
 import { EmotionsController } from './emotions/emotions.controller';
 import { EmotionsService } from './emotions/emotions.service';
 import { EmotionsModule } from './emotions/emotions.module';
-import { EntriesController } from './entries/entries.controller';
-import { EntriesService } from './entries/entries.service';
-import { EntriesModule } from './entries/entries.module';
+import { EmotionsRecordsController } from './emotions-records/emotions-records.controller';
+import { EmotionsRecordsService } from './emotions-records/emotions-records.service';
+import { EntriesModule } from './emotions-records/emotions-records.module';
 import { AdminGuard } from './auth/guards/admin.guard';
 import { AuthGuard } from './auth/guards/auth.guard';
 import { JwtService } from '@nestjs/jwt';
@@ -34,7 +34,7 @@ import { UsersModule } from './users/users.module';
     AuthController,
     ExempleController,
     EmotionsController,
-    EntriesController,
+    EmotionsRecordsController,
     UsersController,
   ],
   providers: [
@@ -45,7 +45,7 @@ import { UsersModule } from './users/users.module';
     PrismaService,
     JwtStrategy,
     EmotionsService,
-    EntriesService,
+    EmotionsRecordsService,
     UsersService,
   ],
 })

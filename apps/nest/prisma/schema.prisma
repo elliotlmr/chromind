@@ -14,12 +14,12 @@ datasource db {
 }
 
 model User {
-  id          String  @id @default(uuid())
-  email       String  @unique
-  password    String
-  createdAt   DateTime @default(now())
-  entries     Entry[]
-  role        Role  @default(USER)
+  id        String           @id @default(uuid())
+  email     String           @unique
+  password  String
+  createdAt DateTime         @default(now())
+  entries   EmotionsRecord[]
+  role      Role             @default(USER)
 }
 
 enum Role {
@@ -28,23 +28,33 @@ enum Role {
 }
 
 model Emotion {
-  id    String @id @default(uuid())
-  color String // e.g., "#FF5733"
-  translations EmotionTranslation[]
+  id            String               @id @default(uuid())
+  color         String // e.g., "#FF5733"
+  translations  EmotionTranslation[]
+  emotionScores EmotionScore[]
 }
 
 model EmotionTranslation {
-  id       String  @id @default(uuid())
-  language String  // "fr", "en", "es", etc.
-  name     String
+  id        String  @id @default(uuid())
+  language  String // "fr", "en", "es", etc.
+  name      String
   emotionId String
-  emotion  Emotion @relation(fields: [emotionId], references: [id])
+  emotion   Emotion @relation(fields: [emotionId], references: [id])
 }
 
-model Entry {
-  id        String   @id @default(uuid())
+model EmotionScore {
+  id             String         @id @default(uuid())
+  emotionId      String
+  emotion        Emotion        @relation(fields: [emotionId], references: [id])
+  recordId       String
+  emotionsRecord EmotionsRecord @relation(fields: [recordId], references: [id])
+  score          Int // Between 0 and 10
+}
+
+model EmotionsRecord {
+  id        String         @id @default(uuid())
   userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  createdAt      DateTime
-  scores    Json  // Store emotion scores as JSON (e.g., {"happiness": 8, "anger": 2})
+  user      User           @relation(fields: [userId], references: [id])
+  createdAt DateTime
+  scores    EmotionScore[]
 }

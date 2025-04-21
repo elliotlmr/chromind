@@ -10,6 +10,7 @@ import NotFoundView from '@/views/NotFoundView.vue'
 import { useAuthStore } from '@/stores/auth'
 import { jwtDecode, type JwtPayload } from 'jwt-decode'
 import { useNotificationStore } from '@/stores/notifications'
+import ApplicationView from '@/views/ApplicationView.vue'
 
 interface CustomJwtPayload extends JwtPayload {
   role: 'ADMIN' | 'USER'
@@ -22,6 +23,15 @@ export const routes = [
     component: DashboardView,
     meta: {
       title: 'Dashboard',
+    },
+    showNavigationMenu: true,
+  },
+  {
+    path: 'application',
+    name: 'application',
+    component: ApplicationView,
+    meta: {
+      title: 'Application',
     },
     showNavigationMenu: true,
   },
