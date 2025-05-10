@@ -9,6 +9,7 @@ import {
   HttpCode,
   HttpStatus,
   UnauthorizedException,
+  BadRequestException,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import type { Request } from 'express';
@@ -27,13 +28,13 @@ export class AuthController {
   @Post('signup')
   async signup(@Body() signUpDto: SignUpDto) {
     if (!signUpDto.email || !signUpDto.password || !signUpDto.confirmPassword) {
-      throw new UnauthorizedException(
-        'Invalid email, password or password confirmation.',
+      throw new BadRequestException(
+        'Missing email, password or password confirmation.',
       );
     }
 
     if (signUpDto.password !== signUpDto.confirmPassword) {
-      throw new UnauthorizedException(
+      throw new BadRequestException(
         'Password does not match password confirmation.',
       );
     }
