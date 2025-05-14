@@ -7,11 +7,13 @@ import {
   Request,
   UseGuards,
   Req,
+  Query,
 } from '@nestjs/common';
 import { EmotionsRecordsService } from './emotions-records.service';
 import { CreateEmotionsRecordDto } from './dto/create-emotions-record.dto';
 import { AdminGuard } from 'src/auth/guards/admin.guard';
 import { AuthenticatedRequest } from 'src/auth/dto/authenticated-request.dto';
+import { GetEmotionsRecordsQueryDto } from './dto/get-emotions-records.dto';
 
 @Controller('emotions-records')
 export class EmotionsRecordsController {
@@ -20,17 +22,20 @@ export class EmotionsRecordsController {
   ) {}
 
   @Get()
-  findEmotionsRecords(@Req() req: AuthenticatedRequest) {
-    return this.emotionsRecordsService.getEmotionsRecords(req.user.sub);
+  getEmotionsRecords(
+    @Req() req: AuthenticatedRequest,
+    @Query() query: GetEmotionsRecordsQueryDto,
+  ) {
+    return this.emotionsRecordsService.getEmotionsRecords(req.user.sub, query);
   }
 
   @Post()
-  create(
-    @Request() req: { user: { id: string } },
+  createEmotionsRecord(
+    @Request() req: AuthenticatedRequest,
     @Body() createEntryDto: CreateEmotionsRecordDto,
   ) {
     return this.emotionsRecordsService.createEmotionsRecord(
-      req.user.id,
+      req.user.sub,
       createEntryDto,
     );
   }
@@ -39,7 +44,7 @@ export class EmotionsRecordsController {
 
   @UseGuards(AdminGuard)
   @Get('user/:userId')
-  findUserEmotionsRecords(@Param('userId') userId: string) {
+  getUserEmotionsRecords(@Param('userId') userId: string) {
     return this.emotionsRecordsService.getUserEmotionsRecords(userId);
   }
 

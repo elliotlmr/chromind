@@ -42,7 +42,9 @@ export class AuthGuard implements CanActivate {
         [key: string]: any;
       }>(token, { secret: process.env.JWT_SECRET });
 
-      console.log('DECODED :', decoded);
+      if (!decoded) {
+        throw new UnauthorizedException('Invalid token');
+      }
 
       request.user = decoded;
     } catch {

@@ -6,19 +6,35 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateEmotionsRecordDto } from './dto/create-emotions-record.dto';
 import { EmotionsRecord } from '@prisma/client';
+import { GetEmotionsRecordsQueryDto } from './dto/get-emotions-records.dto';
 
 @Injectable()
 export class EmotionsRecordsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getEmotionsRecords(userId: string): Promise<EmotionsRecord[]> {
+  async getEmotionsRecords(
+    userId: string,
+    query: GetEmotionsRecordsQueryDto,
+  ): Promise<EmotionsRecord[]> {
+    const { startDate, endDate } = query;
+
     return await this.prisma.emotionsRecord.findMany({
-      where: { userId },
+      where: {
+        userId,
+        createdAt: {
+          gte: startDate ? new Date(startDate) : undefined,
+          lte: endDate ? new Date(endDate) : undefined,
+        },
+      },
       orderBy: { createdAt: 'desc' },
+      include: {
+        scores: true,
+      },
     });
   }
 
   async createEmotionsRecord(userId: string, dto: CreateEmotionsRecordDto) {
+    console.log('USER IS', userId);
     //? Check if the user has already submitted their emotions for today
     const startOfToday = new Date().setHours(0, 0, 0, 0);
 

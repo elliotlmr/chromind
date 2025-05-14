@@ -28,18 +28,20 @@ enum Role {
 }
 
 model Emotion {
-  id            String               @id @default(uuid())
-  color         String // e.g., "#FF5733"
+  id            String                @id @default(uuid())
+  color         String                @unique // e.g., "#FF5733"
   translations  EmotionTranslation[]
   emotionScores EmotionScore[]
 }
 
 model EmotionTranslation {
   id        String  @id @default(uuid())
-  language  String // "fr", "en", "es", etc.
-  name      String
+  language  String  // "fr", "en", "es", etc.
+  name      String  // e.g., "Happy", "Sad"
   emotionId String
   emotion   Emotion @relation(fields: [emotionId], references: [id])
+
+  @@unique([language, name]) // Ensure unique name per language for each emotion
 }
 
 model EmotionScore {
