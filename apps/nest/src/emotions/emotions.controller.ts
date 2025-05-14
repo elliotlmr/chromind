@@ -15,7 +15,7 @@ export class EmotionsController {
   }
 
   @Post()
-  @UseGuards(AdminGuard) // Only for admins
+  @UseGuards(AdminGuard)
   create(@Body() createEmotionDto: CreateEmotionDto) {
     return this.emotionsService.createEmotion(createEmotionDto);
   }

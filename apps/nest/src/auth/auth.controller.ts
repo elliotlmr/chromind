@@ -25,7 +25,7 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @IsPublic()
-  @Post('signup')
+  @Post('sign-up')
   async signup(@Body() signUpDto: SignUpDto) {
     if (!signUpDto.email || !signUpDto.password || !signUpDto.confirmPassword) {
       throw new BadRequestException(
@@ -44,7 +44,7 @@ export class AuthController {
 
   @IsPublic()
   @HttpCode(HttpStatus.OK)
-  @Post('signin')
+  @Post('sign-in')
   async signin(@Body() signInDto: SignInDto) {
     if (!signInDto.email || !signInDto.password) {
       throw new UnauthorizedException(

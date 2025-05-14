@@ -1,0 +1,24 @@
+{
+  "name": "generate-types",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "generate:types": "ts-node index.ts"
+  },
+  "dependencies": {
+    "fast-glob": "^3.3.3",
+    "ts-node": "^10.9.2"
+  },
+  "devDependencies": {
+    "@prisma/generator-helper": "^6.7.0",
+    "@prisma/internals": "^6.7.0",
+    "@types/node": "^22.15.18",
+    "ts-morph": "^25.0.1",
+    "typescript": "^5.8.3"
+  }
+}
