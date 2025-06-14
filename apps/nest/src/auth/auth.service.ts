@@ -47,6 +47,8 @@ export class AuthService {
 
     console.log(user);
 
+    console.log(process.env.JWT_SECRET);
+
     if (!user) throw new UnauthorizedException('Invalid credentials');
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
@@ -63,6 +65,9 @@ export class AuthService {
     role: Role,
   ): Promise<{ access_token: string }> {
     const payload: JwtPayload = { sub: userId, email, role };
+
+    console.log(payload);
+    console.log(process.env.JWT_SECRET);
 
     return { access_token: await this.jwtService.signAsync(payload) };
   }
