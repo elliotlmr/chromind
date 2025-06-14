@@ -64,7 +64,7 @@ export default function Dashboard() {
   };
 
   const getEmotions = async () => {
-    const endpoint = 'http://localhost:3000/emotions'; // remplace par ton URL réelle
+    const endpoint = 'http://localhost:3000/emotions';
     try {
       const res = await fetch(endpoint, {
         method: 'GET',
