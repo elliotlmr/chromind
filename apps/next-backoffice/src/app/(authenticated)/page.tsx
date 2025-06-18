@@ -1,7 +1,8 @@
-'use client';
+"use client";
 
-import { emotions } from '@/utils/emotions.data';
-import { useEffect, useState } from 'react';
+import { emotions } from "@/utils/emotions.data";
+import { fetchAPI } from "@/utils/fetchAPI";
+import { useEffect, useState } from "react";
 
 export default function Dashboard() {
   const [emotionsList, setEmotions] = useState<typeof emotions>([]);
@@ -10,14 +11,14 @@ export default function Dashboard() {
     event.preventDefault();
 
     try {
-      const res = await fetch('http://localhost:3000/auth/sign-in', {
-        method: 'POST',
+      const res = await fetchAPI("/auth/sign-in", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: 'admin@gmail.com',
-          password: 'Lapin123+',
+          email: "admin@gmail.com",
+          password: "Lapin123+",
         }),
       });
 
@@ -25,24 +26,21 @@ export default function Dashboard() {
 
       if (res.ok) {
         // Sauvegarder le token dans le localStorage ou cookie si besoin
-        localStorage.setItem('token', data.access_token);
+        localStorage.setItem("token", data.access_token);
       } else {
       }
     } catch (err) {
-      console.log('Une erreur est survenue.', err);
+      console.log("Une erreur est survenue.", err);
     }
   };
 
   const seedEmotions = async () => {
-    const endpoint = 'http://localhost:3000/emotions'; // remplace par ton URL réelle
-
     for (const emotion of emotions) {
       try {
-        const res = await fetch(endpoint, {
-          method: 'POST',
+        const res = await fetchAPI("/emotions", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            "Content-Type": "application/json",
           },
           body: JSON.stringify(emotion),
         });
@@ -64,13 +62,11 @@ export default function Dashboard() {
   };
 
   const getEmotions = async () => {
-    const endpoint = 'http://localhost:3000/emotions';
     try {
-      const res = await fetch(endpoint, {
-        method: 'GET',
+      const res = await fetchAPI("/emotions", {
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          "Content-Type": "application/json",
         },
       });
 
@@ -94,7 +90,7 @@ export default function Dashboard() {
     getEmotions();
   }, []);
 
-  const gradientColors = emotions.map((e) => e.color).join(', ');
+  const gradientColors = emotions.map((e) => e.color).join(", ");
   const gradient = `linear-gradient(to right, ${gradientColors})`;
 
   const gradientStops = emotions
@@ -102,7 +98,7 @@ export default function Dashboard() {
       const percent = Math.round((i / (arr.length - 1 || 1)) * 100);
       return `${e.color} ${percent}%`;
     })
-    .join(', ');
+    .join(", ");
 
   const radialGradient = `radial-gradient(circle, ${gradientStops})`;
 
@@ -111,65 +107,65 @@ export default function Dashboard() {
   return (
     <div>
       <p>Dashboard</p>
-      <button className='btn btn-primary' onClick={handleSignIn}>
+      <button className="btn btn-primary" onClick={handleSignIn}>
         Sign In
       </button>
-      <button className='btn btn-primary' onClick={seedEmotions}>
+      <button className="btn btn-primary" onClick={seedEmotions}>
         create emotions
       </button>
       <div>
         {emotions.map((emotion, i) => (
           <div
             key={i}
-            className='flex items-center justify-between p-4 border-b'
+            className="flex items-center justify-between p-4 border-b"
           >
-            <div className='flex items-center'>
+            <div className="flex items-center">
               <div
-                className='w-8 h-8 rounded-full'
+                className="w-8 h-8 rounded-full"
                 style={{ backgroundColor: emotion.color }}
               ></div>
-              <span className='ml-2'>{emotion.translations[0].name}</span>
+              <span className="ml-2">{emotion.translations[0].name}</span>
             </div>
           </div>
         ))}
       </div>
       <div
         style={{
-          height: '200px',
-          width: '100%',
+          height: "200px",
+          width: "100%",
           background: gradient,
-          borderRadius: '1rem',
-          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)',
-          margin: '2rem 0',
+          borderRadius: "1rem",
+          boxShadow: "0 4px 20px rgba(0, 0, 0, 0.2)",
+          margin: "2rem 0",
         }}
       ></div>
       <div
         style={{
-          height: '300px',
-          width: '100%',
+          height: "300px",
+          width: "100%",
           background: radialGradient,
-          borderRadius: '1rem',
-          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)',
-          margin: '2rem 0',
+          borderRadius: "1rem",
+          boxShadow: "0 4px 20px rgba(0, 0, 0, 0.2)",
+          margin: "2rem 0",
         }}
       ></div>
       <div
         style={{
-          height: '80vw',
-          width: '80vw',
+          height: "80vw",
+          width: "80vw",
           background: conicGradient,
-          borderRadius: '1rem',
-          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)',
-          margin: '2rem auto',
-          padding: '8px',
+          borderRadius: "9999px",
+          boxShadow: "0 4px 20px rgba(0, 0, 0, 0.2)",
+          margin: "2rem auto",
+          padding: "20px",
         }}
       >
         <div
           style={{
-            height: '100%',
-            width: '100%',
-            background: 'black',
-            borderRadius: '.8rem',
+            height: "100%",
+            width: "100%",
+            background: "black",
+            borderRadius: "9999px",
           }}
         ></div>
       </div>
@@ -177,14 +173,14 @@ export default function Dashboard() {
         {emotionsList.map((emotion, i) => (
           <div
             key={i}
-            className='flex items-center justify-between p-4 border-b'
+            className="flex items-center justify-between p-4 border-b"
           >
-            <div className='flex items-center'>
+            <div className="flex items-center">
               <div
-                className='w-8 h-8 rounded-full'
+                className="w-8 h-8 rounded-full"
                 style={{ backgroundColor: emotion.color }}
               ></div>
-              <span className='ml-2'>{emotion.translations[0].name}</span>
+              <span className="ml-2">{emotion.translations[0].name}</span>
             </div>
           </div>
         ))}
